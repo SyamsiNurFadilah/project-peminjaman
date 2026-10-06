@@ -28,7 +28,7 @@
                 <!-- Brand / Logo -->
                 <div class="flex items-center gap-3">
                     <a href="{{ auth()->check() && auth()->user()->isAdmin() ? route('admin.dashboard') : route('catalog.index') }}" class="flex items-center gap-2.5 group">
-                        <div class="w-10 h-10 rounded-xl {{ auth()->check() && auth()->user()->isAdmin() ? 'bg-indigo-600 group-hover:bg-indigo-700 shadow-indigo-500/20' : 'bg-blue-600 group-hover:bg-blue-700 shadow-blue-500/20' }} text-white flex items-center justify-center font-bold text-lg shadow-sm transition">
+                        <div class="w-10 h-10 rounded-xl bg-blue-600 group-hover:bg-blue-700 shadow-blue-500/20 text-white flex items-center justify-center font-bold text-lg shadow-sm transition">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h3v3h-3v-3zM13.5 19.5h3v1.5h-3v-1.5zM19.5 13.5h1.5v3h-1.5v-3zM19.5 19.5h1.5v1.5h-1.5v-1.5zM16.5 16.5h3v3h-3v-3z" />
@@ -48,28 +48,32 @@
                     @auth
                         @if(Auth::user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" 
-                               class="px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                                Dashboard Admin
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('admin.dashboard') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                                Dashboard
                             </a>
                             <a href="{{ route('admin.borrowings') }}" 
-                               class="px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('admin.borrowings*') ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                                Verifikasi Peminjaman
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('admin.borrowings*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                                Peminjaman
                             </a>
                             <a href="{{ route('admin.items') }}" 
-                               class="px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('admin.items*') ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                                Kelola Barang & QR
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('admin.items*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                                Barang
+                            </a>
+                            <a href="{{ route('admin.admins') }}" 
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('admin.admins*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                                Petugas
                             </a>
                             <a href="{{ route('catalog.index') }}" 
-                               class="px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('catalog.*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
-                                List Katalog
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('catalog.*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                                Katalog
                             </a>
                         @else
                             <a href="{{ route('catalog.index') }}" 
-                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('catalog.*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('catalog.*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                                 Katalog Inventaris
                             </a>
                             <a href="{{ route('scan.index') }}" 
-                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 {{ request()->routeIs('scan.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 whitespace-nowrap {{ request()->routeIs('scan.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                                 <svg class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
@@ -77,17 +81,17 @@
                                 Scan Mandiri (QR)
                             </a>
                             <a href="{{ route('borrowings.my') }}" 
-                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('borrowings.my') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                               class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('borrowings.my') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                                 Peminjaman Saya
                             </a>
                         @endif
                     @else
                         <a href="{{ route('catalog.index') }}" 
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('catalog.*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap {{ request()->routeIs('catalog.*') ? 'bg-slate-100 text-slate-900 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Katalog Inventaris
                         </a>
                         <a href="{{ route('scan.index') }}" 
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 {{ request()->routeIs('scan.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 whitespace-nowrap {{ request()->routeIs('scan.*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             <svg class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
@@ -114,7 +118,7 @@
                                 @csrf
                                 <button type="submit" 
                                         title="Keluar dari akun"
-                                        class="p-2 rounded-lg border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 transition"
+                                        class="p-2 rounded-lg border border-slate-200 text-slate-600 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 transition cursor-pointer"
                                         onclick="return confirm('Apakah Anda yakin ingin keluar?')">
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -123,13 +127,19 @@
                             </form>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" 
-                           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 shadow-sm shadow-blue-500/10 transition">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7 0 3.75 3.75 0 017 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                            </svg>
-                            Masuk / Login
-                        </a>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('login') }}" 
+                               class="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition whitespace-nowrap {{ request()->routeIs('login') ? 'bg-slate-100 text-slate-900' : '' }}">
+                                Masuk
+                            </a>
+                            <a href="{{ route('register') }}" 
+                               class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 shadow-sm shadow-blue-500/10 transition whitespace-nowrap">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.765z" />
+                                </svg>
+                                <span>Daftar</span>
+                            </a>
+                        </div>
                     @endauth
                 </div>
             </div>
@@ -139,38 +149,44 @@
         <div class="md:hidden border-t border-slate-100 bg-white px-4 py-2 flex items-center justify-around text-xs font-medium text-slate-600">
             @auth
                 @if(Auth::user()->isAdmin())
-                    <a href="{{ route('admin.dashboard') }}" class="py-1 px-2 rounded {{ request()->routeIs('admin.dashboard') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
+                    <a href="{{ route('admin.dashboard') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('admin.dashboard') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
                         Dashboard
                     </a>
-                    <a href="{{ route('admin.borrowings') }}" class="py-1 px-2 rounded {{ request()->routeIs('admin.borrowings*') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
+                    <a href="{{ route('admin.borrowings') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('admin.borrowings*') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
                         Peminjaman
                     </a>
-                    <a href="{{ route('admin.items') }}" class="py-1 px-2 rounded {{ request()->routeIs('admin.items*') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
-                        Barang & QR
+                    <a href="{{ route('admin.items') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('admin.items*') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
+                        Barang
                     </a>
-                    <a href="{{ route('catalog.index') }}" class="py-1 px-2 rounded {{ request()->routeIs('catalog.*') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
-                        List Katalog
+                    <a href="{{ route('admin.admins') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('admin.admins*') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
+                        Petugas
                     </a>
-                @else
-                    <a href="{{ route('catalog.index') }}" class="py-1 px-2.5 rounded {{ request()->routeIs('catalog.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
+                    <a href="{{ route('catalog.index') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('catalog.*') ? 'text-indigo-600 font-bold bg-indigo-50' : '' }}">
                         Katalog
                     </a>
-                    <a href="{{ route('scan.index') }}" class="py-1 px-2.5 rounded {{ request()->routeIs('scan.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
+                @else
+                    <a href="{{ route('catalog.index') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('catalog.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
+                        Katalog
+                    </a>
+                    <a href="{{ route('scan.index') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('scan.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
                         Scan QR
                     </a>
-                    <a href="{{ route('borrowings.my') }}" class="py-1 px-2.5 rounded {{ request()->routeIs('borrowings.my') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
+                    <a href="{{ route('borrowings.my') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('borrowings.my') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
                         Riwayat
                     </a>
                 @endif
             @else
-                <a href="{{ route('catalog.index') }}" class="py-1 px-2.5 rounded {{ request()->routeIs('catalog.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
+                <a href="{{ route('catalog.index') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('catalog.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
                     Katalog
                 </a>
-                <a href="{{ route('scan.index') }}" class="py-1 px-2.5 rounded {{ request()->routeIs('scan.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
+                <a href="{{ route('scan.index') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('scan.*') ? 'text-blue-600 font-bold bg-blue-50' : '' }}">
                     Scan QR
                 </a>
-                <a href="{{ route('login') }}" class="py-1 px-2.5 rounded text-blue-600 font-bold">
+                <a href="{{ route('login') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('login') ? 'text-blue-600 font-bold bg-blue-50' : 'text-slate-600' }}">
                     Masuk
+                </a>
+                <a href="{{ route('register') }}" class="py-1 px-2.5 rounded whitespace-nowrap {{ request()->routeIs('register') ? 'text-blue-600 font-bold bg-blue-50' : 'text-blue-600 font-semibold' }}">
+                    Daftar
                 </a>
             @endauth
         </div>

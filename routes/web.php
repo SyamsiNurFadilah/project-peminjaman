@@ -24,6 +24,8 @@ Route::get('/katalog/{item}', [CatalogController::class, 'show'])->name('catalog
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
@@ -54,4 +56,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/barang/{item}', [AdminController::class, 'updateItem'])->name('items.update');
     Route::delete('/barang/{item}', [AdminController::class, 'destroyItem'])->name('items.destroy');
     Route::get('/barang/{item}/cetak-qr', [AdminController::class, 'printQr'])->name('items.print_qr');
+
+    // Petugas & Administrator Management
+    Route::get('/petugas', [AdminController::class, 'admins'])->name('admins');
+    Route::post('/petugas', [AdminController::class, 'storeAdmin'])->name('admins.store');
+    Route::delete('/petugas/{user}', [AdminController::class, 'destroyAdmin'])->name('admins.destroy');
 });

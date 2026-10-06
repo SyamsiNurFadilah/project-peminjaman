@@ -105,4 +105,168 @@ class AuthTest extends TestCase
         $this->assertGuest();
         $response->assertRedirect('/login');
     }
+
+    public function test_register_screen_can_be_rendered(): void
+    {
+        $response = $this->get('/register');
+
+        $response->assertStatus(200);
+        $response->assertSee('Daftar Akun Mahasiswa');
+        $response->assertSee('Nomor Induk Mahasiswa (NIM)');
+        $response->assertDontSee('Petugas / Admin');
+    }
+
+    public function test_new_student_can_register(): void
+    {
+        $response = $this->post('/register', [
+            'name' => 'Fadilah Mahasiswa',
+            'nim_nip' => '220109999',
+            'email' => 'fadilah@mahasiswa.ac.id',
+            'password' => 'secret123',
+            'password_confirmation' => 'secret123',
+        ]);
+
+        $this->assertAuthenticated();
+        $this->assertDatabaseHas('users', [
+            'email' => 'fadilah@mahasiswa.ac.id',
+            'nim_nip' => '220109999',
+            'role' => 'student',
+        ]);
+        $response->assertRedirect(route('catalog.index'));
+    }
+
+    public function test_public_registration_always_creates_student_account(): void
+    {
+        // Even if role='admin' is attempted in payload, public register forces student
+        $response = $this->post('/register', [
+            'name' => 'Attempted Admin',
+            'role' => 'admin',
+            'nim_nip' => '220108888',
+            'email' => 'attempt@mahasiswa.ac.id',
+            'password' => 'secret123',
+            'password_confirmation' => 'secret123',
+        ]);
+
+        $this->assertAuthenticated();
+        $this->assertDatabaseHas('users', [
+            'email' => 'attempt@mahasiswa.ac.id',
+            'nim_nip' => '220108888',
+            'role' => 'student',
+        ]);
+        $this->assertDatabaseMissing('users', [
+            'email' => 'attempt@mahasiswa.ac.id',
+            'role' => 'admin',
+        ]);
+        $response->assertRedirect(route('catalog.index'));
+    }
+
+    public function test_admin_can_access_petugas_management_and_register_new_admin(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.admins'));
+        $response->assertStatus(200);
+        $response->assertSee('Kelola Petugas');
+
+        $storeResponse = $this->actingAs($admin)->post(route('admin.admins.store'), [
+            'name' => 'Petugas Baru Laboratorium',
+            'nim_nip' => '199505052023011002',
+            'email' => 'petugas.baru@kampus.ac.id',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $storeResponse->assertRedirect();
+        $this->assertDatabaseHas('users', [
+            'email' => 'petugas.baru@kampus.ac.id',
+            'nim_nip' => '199505052023011002',
+            'role' => 'admin',
+        ]);
+    }
+
+    public function test_students_cannot_access_petugas_management(): void
+    {
+        $student = User::factory()->create([
+            'role' => 'student',
+        ]);
+
+        $response = $this->actingAs($student)->get(route('admin.admins'));
+        $response->assertRedirect(route('catalog.index'));
+
+        $postResponse = $this->actingAs($student)->post(route('admin.admins.store'), [
+            'name' => 'Hacker Admin',
+            'nim_nip' => '999999',
+            'email' => 'hacker@kampus.ac.id',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+        $postResponse->assertRedirect(route('catalog.index'));
+        $this->assertDatabaseMissing('users', ['email' => 'hacker@kampus.ac.id']);
+    }
+
+    public function test_admin_cannot_delete_their_own_account(): void
+    {
+        $admin = User::factory()->create([
+            'role' => 'admin',
+        ]);
+
+        $response = $this->actingAs($admin)->delete(route('admin.admins.destroy', $admin));
+        $response->assertSessionHas('error');
+        $this->assertDatabaseHas('users', ['id' => $admin->id]);
+    }
+
+    public function test_registration_requires_matching_password_confirmation(): void
+    {
+        $response = $this->post('/register', [
+            'name' => 'Testing User',
+            'role' => 'student',
+            'nim_nip' => '11223344',
+            'email' => 'mismatch@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'different123',
+        ]);
+
+        $response->assertSessionHasErrors('password');
+        $this->assertGuest();
+    }
+
+    public function test_registration_rejects_duplicate_email(): void
+    {
+        User::factory()->create([
+            'email' => 'existing@kampus.ac.id',
+        ]);
+
+        $response = $this->post('/register', [
+            'name' => 'Duplicate Email',
+            'role' => 'student',
+            'nim_nip' => '99887766',
+            'email' => 'existing@kampus.ac.id',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors('email');
+        $this->assertGuest();
+    }
+
+    public function test_registration_rejects_duplicate_nim_nip(): void
+    {
+        User::factory()->create([
+            'nim_nip' => '99887766',
+        ]);
+
+        $response = $this->post('/register', [
+            'name' => 'Duplicate NIM',
+            'role' => 'student',
+            'nim_nip' => '99887766',
+            'email' => 'unique@kampus.ac.id',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors('nim_nip');
+        $this->assertGuest();
+    }
 }

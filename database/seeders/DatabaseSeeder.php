@@ -19,15 +19,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1. Akun Admin / Petugas Inventaris
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@kampus.ac.id'],
-            [
-                'name' => 'Administrator Inventaris',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-                'nim_nip' => '198503152010121002',
-            ]
-        );
+        $this->call(AdminSeeder::class);
+        $admin = User::where('email', 'admin@kampus.ac.id')->first();
 
         // 2. Akun Mahasiswa
         $mahasiswa1 = User::firstOrCreate(
